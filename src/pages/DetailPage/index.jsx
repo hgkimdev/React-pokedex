@@ -8,6 +8,7 @@ import { ArrowLeft } from '../../assets/ArrowLeft';
 import { Balance } from '../../assets/Balance';
 import { Vector } from '../../assets/Vector';
 import Type from '../../components/Type';
+import BaseStat from '../../components/Basestat';
 
 const DetailPage = () => {
 
@@ -21,7 +22,7 @@ const DetailPage = () => {
 
   useEffect(() => {
     fetchPokeData();
-  }, [])
+  }, [pokemonId])
   
 
     async function fetchPokeData() {
@@ -71,14 +72,14 @@ const DetailPage = () => {
       statDEF,
       statSATK,
       statSDEF,
-      starSPD
+      statSPD
     ]) => [
       {name: 'Hit Point', baseStat: statHP.base_stat},
-      {name: 'Atteck', baseStat: statATK.base_stat},
+      {name: 'Attack', baseStat: statATK.base_stat},
       {name: 'Defense', baseStat: statDEF.base_stat},
-      {name: 'Special Atteck', baseStat: statSATK.base_stat},
+      {name: 'Special Attack', baseStat: statSATK.base_stat}, 
       {name: 'Special Defense', baseStat: statSDEF.base_stat},
-      {name: 'Speed', baseStat: starSPD.base_stat}
+      {name: 'Speed', baseStat: statSPD.base_stat}
     ]
 
     const formatPokemonAbilites = (abilities) => {
@@ -107,7 +108,7 @@ const DetailPage = () => {
     if(isLoading) {
       return ( 
       <div className= {
-        `absolute h-auto w-auto top-1/3 translate-x-1/2 left-1/2 z-50`
+        `absolute h-auto w-auto top-1/3 -translate-x-1/2 left-1/2 z-50`
       }>
           <Loading className='w-12 h-12 z-50 animate-spin text-slate-900' />
       </div>
@@ -142,10 +143,25 @@ const DetailPage = () => {
       fairy: 'bg-pink-300',
 };
 
-const TYPE_TEXT_COLORS = {
-  normal: 'text-gray-400',
-  fighting: 'text-red-600',
-  // ... 나머지 타입들
+    const TYPE_TEXT_COLORS = {
+      normal: 'text-gray-400',
+      fighting: 'text-red-600',
+      flying: 'text-blue-400',
+      poison: 'text-purple-500',
+      ground: 'text-yellow-600',
+      rock: 'text-yellow-800',
+      bug: 'text-green-400',
+      ghost: 'text-purple-600',
+      steel: 'text-gray-500',
+      fire: 'text-red-500',
+      water: 'text-blue-500',
+      grass: 'text-green-500',
+      electric: 'text-yellow-400',
+      psychic: 'text-pink-500',
+      ice: 'text-blue-300',
+      dragon: 'text-purple-700',
+      dark: 'text-gray-800',
+      fairy: 'text-pink-300',
 };
 
 // 사용
@@ -222,14 +238,14 @@ const text = TYPE_TEXT_COLORS[pokemon.types[0]] || 'text-gray-400';
         <div className='flex w-full items-center justify-between max-w-[400px] text-center'>
           <div className='w-full '>
              <h4 className='text-[0.5rem] text-zinc-100'>Weight</h4>
-             <div className='text-sm flex mt-1 gep-2 justify-center text-zinc-200'>
+             <div className='text-sm flex mt-1 gap-2 justify-center text-zinc-200'>
               <Balance />
              {pokemon.weight}kg
               </div>
           </div>
           <div className='w-full'>
              <h4 className='text-[0.5rem] text-zinc-100'>Height</h4>
-             <div className='text-sm flex mt-1 gep-2 justify-center text-zinc-200'>
+             <div className='text-sm flex mt-1 gap-2 justify-center text-zinc-200'>
               <Vector />
              {pokemon.height}m
               </div>
@@ -237,7 +253,7 @@ const text = TYPE_TEXT_COLORS[pokemon.types[0]] || 'text-gray-400';
           <div className='w-full'>
              <h4 className='text-[0.5rem] text-zinc-100 capitalize'>Ability</h4>  
              {pokemon.abilities.map((ability) =>(
-                <div className="text" key= {ability}>{ability}</div>
+                <div className="text-sm text-zinc-200" key= {ability}>{ability}</div>
              ))}
               </div>
           </div>
@@ -247,7 +263,19 @@ const text = TYPE_TEXT_COLORS[pokemon.types[0]] || 'text-gray-400';
              기본 능력치
           </h2>
           <div className='w-full'>
-                Stat
+                
+                <table>
+                  <tbody>
+                      {pokemon.stats.map((stat) => (
+                        <BaseStat
+                          key={stat.name}
+                          valueStat={stat.baseStat}
+                          nameStat={stat.name}
+                          type={pokemon.types[0]}
+                        />
+                      ))}
+                  </tbody>
+                </table>
           </div>
 
 
